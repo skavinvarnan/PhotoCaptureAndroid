@@ -9,11 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.skvarnan.photo.capture.library.BitmapHelper;
+import com.skvarnan.photo.capture.library.PhotoCaptureHelper;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BitmapHelper mBitmapHelper;
+    private PhotoCaptureHelper mPhotoCaptureHelper;
     private static final int CAPTURE_IMAGE = 1001;
 
     private Bitmap mSelectedImage = null;
@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBitmapHelper = new BitmapHelper(this);
+        mPhotoCaptureHelper = new PhotoCaptureHelper(this);
+        mPhotoCaptureHelper.setDirectoryName("MyDir");
+        mPhotoCaptureHelper.setPhotoHeightWidth(512, 1024);
         setContentView(R.layout.activity_main);
     }
 
@@ -30,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void dispatchTakePictureIntent() {
+
+        PhotoCaptureHelper.verifyStoragePermissions(this);
         final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mBitmapHelper.setImageUri());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoCaptureHelper.setImageUri());
         startActivityForResult(intent, CAPTURE_IMAGE);
     }
 
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAPTURE_IMAGE) {
-                mSelectedImage = mBitmapHelper.rotateImage(mBitmapHelper.getImagePath());
+                mSelectedImage = mPhotoCaptureHelper.getImageBitmap();
                 ((ImageView) findViewById(R.id.image)).setImageBitmap(mSelectedImage);
             }
         }
