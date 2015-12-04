@@ -159,7 +159,6 @@ public class PhotoCaptureHelper {
 
             BitmapFactory.decodeStream(in, null, o);
             in.close();
-
             int scale = 1;
             int inSampleSize = 1024;
             if (o.outHeight > inSampleSize || o.outWidth > inSampleSize) {
@@ -171,7 +170,6 @@ public class PhotoCaptureHelper {
             in = mActivity.getContentResolver().openInputStream(uri);
             Bitmap b = BitmapFactory.decodeStream(in, null, o2);
             in.close();
-
             return b;
 
         } catch (Exception e) {
