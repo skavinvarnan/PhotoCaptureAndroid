@@ -185,9 +185,7 @@ public class PhotoCaptureHelper {
     }
 
     public Uri setImageUri() {
-
         createFolderIfNeeded();
-
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             File file = new File(Environment.getExternalStorageDirectory() + "/" + mStorageLocation +
